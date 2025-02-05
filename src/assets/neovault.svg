@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  
+  <path d="M60 10 L10 40 V70 C10 90 30 110 60 110 C90 110 110 90 110 70 V40 Z" fill="url(#shield-gradient)" stroke="#2C3E50" stroke-width="2" />
+  
+  <path d="M60 10 L10 40 V70 C10 90 30 110 60 110 C90 110 110 90 110 70 V40 Z" fill="none" stroke="url(#shield-highlight)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <path d="M40 60 L55 75 L80 45" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <defs>
+    <linearGradient id="shield-gradient" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#4A90E2" />
+      <stop offset="100%" stop-color="#2C3E50" />
+    </linearGradient>
+    
+    <linearGradient id="shield-highlight" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+</svg>
