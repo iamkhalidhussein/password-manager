@@ -10,7 +10,7 @@ import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
-export const AddCredential = () => {
+const AddCredential = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useKindeAuth();
     const [credentialStoring, setCredentialStoring] = useState(false);
@@ -30,7 +30,7 @@ export const AddCredential = () => {
         website: string,
         username_or_email: string,
         password: string,
-        email: string
+        email: string | null | undefined
     }
 
     const onSubmit = async (credentials: Credentials) => {
@@ -108,3 +108,5 @@ export const AddCredential = () => {
     </div>
     )
 };
+
+export default AddCredential;

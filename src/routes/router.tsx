@@ -1,21 +1,28 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { AddCredential } from '@/pages/add-credential';
-import { Dashboard } from '@/pages/dashboard';
 import { Home } from '@/pages/home';
 import { PrivateRoute } from '@/routes/private-route';
+import { Suspense, lazy } from 'react';
+import { DashboardSkeleton } from '@/components/skeletons/dashboard-skeleton';
+import { AddCredentialSkeleton } from '@/components/skeletons/add-credential-skeleton';
+
+const Dashboard = lazy(() => import('@/pages/dashboard'));
+const AddCredential = lazy(() => import('@/pages/add-credential'));
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <Home/>
-        // element: <PrivateRoute><Home/></PrivateRoute>
+        element: <PrivateRoute><Home/></PrivateRoute>
     },
     {
         path: "/dashboard",
-        element: <Dashboard/>
+        element: <Suspense fallback={<DashboardSkeleton/>}>
+                    <Dashboard/>
+                </Suspense>
     },
     {
         path: "/add-credential",
-        element: <AddCredential/>
+        element: <Suspense fallback={<AddCredentialSkeleton/>}>
+                    <AddCredential/> 
+                </Suspense>
     }
 ]);

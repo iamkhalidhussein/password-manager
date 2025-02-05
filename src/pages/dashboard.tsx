@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import toast, { Toaster } from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
 
-export const Dashboard = () => {
+const Dashboard = () => {
     const [credentials, setCredentials] = useState([]);
     const axiosSecure = useAxiosSecure();
     const { user } = useKindeAuth();
@@ -79,6 +79,8 @@ export const Dashboard = () => {
     </div>
     )
 };
+
+export default Dashboard;
 
 interface Credential {
     _id: string, 
