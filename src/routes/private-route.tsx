@@ -7,7 +7,7 @@ interface PrivateRouteProps {
     children: React.ReactNode;
 }
 
-export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
+export const PrivateRoute: React.FC<PrivateRouteProps> = () => {
     const { user, isLoading } = useKindeAuth();
     const location = useLocation();
 
@@ -17,8 +17,8 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
     if(user) {
         return <Navigate to='/dashboard' state={{ from: location }} replace />
     }
-
+    
     return (
-        children
+        <Navigate to='/dashboard' state={{ from: location }} replace />
     )
 };

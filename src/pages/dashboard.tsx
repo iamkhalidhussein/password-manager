@@ -2,7 +2,6 @@ import { DashboardRowSkeleton } from "@/components/skeletons/dashboard-row-skele
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { Eye, EyeClosed, Edit, Trash2, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -12,27 +11,36 @@ import { Input } from '@/components/ui/input';
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
+import { NoCredentialFound } from "@/components/no-credential-found";
+import useAxiosPublic from "@/hooks/useAxiosPublic";
 
 const Dashboard = () => {
     const [credentials, setCredentials] = useState([]);
-    const axiosSecure = useAxiosSecure();
     const { user } = useKindeAuth();
+    const axiosPublic = useAxiosPublic();
 
     const {
         refetch: refetchCredentials,
         isLoading: fetchingCredentials,
-        isError
+        isError,
+        isFetching: dataFeching
     } = useQuery({
         queryKey: ['credentials', user?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/users/user-credentials/${user?.email}`);
-            if(res.data?.credentials) {
-                setCredentials(res.data?.credentials)
+            if (!user?.email) {
+                return [];
             }
-            return res.data?.credentials;
-        }
+            const res = await axiosPublic.get(`/users/user-credentials/${user?.email}`);
+            return res?.data?.credentials || [];
+        },
+        onSuccess: (data) => {
+            if (data) {
+                setCredentials(data);
+            }
+        },
+        enabled: !!user?.email
     });
-
+    
     const [theme, ] = useState(() => {
         return localStorage.getItem("dashdeals-theme") === "dark";
     });
@@ -70,6 +78,7 @@ const Dashboard = () => {
                 }
             </Table>
             </CardContent>
+            {credentials?.length === 0 && !dataFeching && <NoCredentialFound/>}
             <CardFooter>
             <Link to="/add-credential">
                 <Button>Add New Password</Button>
@@ -100,7 +109,9 @@ const DashboardTableBody: React.FC<Props> = ({credentials, refetchCredentials}) 
     const [isEditing, setIsEditing] = useState<Record<string, boolean>>({});
     const { user } = useKindeAuth()
     const [savingCredential, setSavingCredential] = useState(false);
-    
+    const axiosPublic = useAxiosPublic();
+    const [isDeleting, setIsDeleting] = useState(false);
+
     const togglePassword = (id: string) => {
         setShowPass(prev => ({
             ...prev,
@@ -111,10 +122,9 @@ const DashboardTableBody: React.FC<Props> = ({credentials, refetchCredentials}) 
     const notify = () => toast.success('Credential Successfully Updated.', {removeDelay: 4000});
 
     const notifyDel = () => toast.success('Credential Successfully Deleted.', {removeDelay: 4000});
-    const axiosSecure = useAxiosSecure();
 
     const editCredential = (id: string) => {
-        console.log(id);
+        //console.log(id);
         setIsEditing(prev => ({
             ...prev,
             [id]: !prev[id]
@@ -149,8 +159,8 @@ const DashboardTableBody: React.FC<Props> = ({credentials, refetchCredentials}) 
             setSavingCredential(true);
             const credentials = getValues('credentials');
             const updatedCredentials = credentials[id];
-            const res = await axiosSecure.patch(`/users/user-credentials/${user?.email}/${id}`, updatedCredentials)
-            console.log(res);
+            const res = await axiosPublic.patch(`/users/user-credentials/${user?.email}/${id}`, updatedCredentials)
+            // console.log(res);
             if(res.data.success) {
                 refetchCredentials();
                 notify();
@@ -165,13 +175,16 @@ const DashboardTableBody: React.FC<Props> = ({credentials, refetchCredentials}) 
     
     const handleCredentialDelete = async (id: string) => {
         try {
-            const res = await axiosSecure.delete(`/users/user-credentials/${user?.email}/${id}`)
+            setIsDeleting(true);
+            const res = await axiosPublic.delete(`/users/user-credentials/${user?.email}/${id}`)
             if(res.data.success) {
                 refetchCredentials();
                 notifyDel();
             }
         } catch (error) {
             console.error('error while deleting credential', error);
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -211,10 +224,10 @@ const DashboardTableBody: React.FC<Props> = ({credentials, refetchCredentials}) 
                 <TableCell>
                 <DropdownMenu>
                     {isEditing[entry._id] 
-                    ? <Button variant="outline" size="sm" onClick={handleSubmit(() => saveCredential(entry._id))}>{savingCredential ?<>Saving<Loader2/></> : 'Save'} </Button> 
-                    :<DropdownMenuTrigger asChild>
+                    ? <Button variant="outline" size="sm" onClick={handleSubmit(() => saveCredential(entry._id))}>{savingCredential ?<>Saving<Loader2 className="animate-spin"/></> : 'Save'} </Button> 
+                    :<DropdownMenuTrigger disabled={ isDeleting ? true : false} asChild>
                     <Button variant="outline" size="sm">
-                        View
+                        {isDeleting ? <Loader2 className="animate-spin"/> : 'View'}
                     </Button>
                     </DropdownMenuTrigger>
                     }

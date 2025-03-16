@@ -15,7 +15,7 @@ const useAxiosSecure = () => {
         const token = localStorage.getItem('access-token');
         if(!token) {
             console.error('No token found');
-            navigate('/');
+            navigate('/dashboard');
             return Promise.reject(new Error('No token found'));
         }
         config.headers.Authorization = `Bearer ${token}`;
@@ -33,7 +33,7 @@ const useAxiosSecure = () => {
             return Promise.reject({ message: 'status code', status });
         } else {
             await logout();
-            navigate('/');
+            navigate('/dashboard');
         }
     })
 

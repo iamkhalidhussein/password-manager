@@ -4,14 +4,13 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
-import useAxiosSecure from "@/hooks/useAxiosSecure";
 import toast, { Toaster } from 'react-hot-toast';
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import axios from "axios";
 
 const AddCredential = () => {
-    const axiosSecure = useAxiosSecure();
     const { user } = useKindeAuth();
     const [credentialStoring, setCredentialStoring] = useState(false);
     
@@ -34,11 +33,11 @@ const AddCredential = () => {
     }
 
     const onSubmit = async (credentials: Credentials) => {
-        console.log(credentials)
+        // console.log(credentials)
         try {
             setCredentialStoring(true);
-            const res = await axiosSecure.post('/users/user-credentials', credentials)
-            console.log(res);
+            const res = await axios.post('http://localhost:3000/users/user-credentials', credentials)
+            // console.log(res);
             if(res.data.success) {
                 notify();
             }

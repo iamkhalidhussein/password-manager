@@ -1,50 +1,76 @@
-# React + TypeScript + Vite
+# Password Manager Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🔐 Overview
 
-Currently, two official plugins are available:
+The Password Manager Web App is a secure and user-friendly application that helps users store, manage, and retrieve passwords effortlessly. It ensures encrypted password storage and provides a seamless experience for managing credentials.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## Expanding the ESLint configuration
+🔑 Secure Password Storage – Encrypt and save passwords securely.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+🔍 Search Functionality – Quickly find stored credentials.
 
-- Configure the top-level `parserOptions` property like this:
+🖊 Update & Delete Passwords – Modify or remove saved credentials.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+🆕 Generate Strong Passwords – Built-in password generator.
+
+🔄 Copy to Clipboard – Easily copy passwords with one click.
+
+📱 Responsive Design – Works on desktop and mobile.
+
+## 🛠 Tech Stack
+
+Frontend: React, Tailwind CSS
+
+Encryption: ( bcrypt )
+
+Storage: ( mongoDB )
+
+## 🚀 Installation
+
+Prerequisites
+
+Node.js & npm installed
+
+## Steps
+
+Clone the repository:
+```bash
+git clone https://github.com/iamkhalidhussein/password-manager.git
 ```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+cd password-manager
 ```
+Install dependencies:
+```bash
+pnpm install
+```
+Start the application:
+```bash
+pnpm run dev
+```
+Open http://localhost:5173 in your browser.
+
+## 🔜 Roadmap
+
+✅ Basic password storage
+
+🔐 Implement advanced encryption
+
+📱 Add browser extension support
+
+🌙 Dark mode support
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to fork the repository, open issues, and submit pull requests.
+
+## 📜 License
+
+This project is licensed under the MIT License.
+
+## 📩 Contact
+
+GitHub: https://github.com/iamkhalidhussein
+
+Email: mdkhalidhossen10@gmail.com

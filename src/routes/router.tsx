@@ -1,6 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { Home } from '@/pages/home';
-import { PrivateRoute } from '@/routes/private-route';
 import { Suspense, lazy } from 'react';
 import { DashboardSkeleton } from '@/components/skeletons/dashboard-skeleton';
 import { AddCredentialSkeleton } from '@/components/skeletons/add-credential-skeleton';
@@ -11,7 +10,7 @@ const AddCredential = lazy(() => import('@/pages/add-credential'));
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <PrivateRoute><Home/></PrivateRoute>
+        element: <Home/>
     },
     {
         path: "/dashboard",

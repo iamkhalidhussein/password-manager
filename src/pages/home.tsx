@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { ArrowRight, Lock, Moon, Shield, Sun, Zap } from "lucide-react";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Home = () => {
     const { login, register } = useKindeAuth();
@@ -50,6 +52,8 @@ const Header: React.FC<HeaderProps> = ({
     login, 
     register 
 }) => {
+    const { user, isLoading } = useKindeAuth();
+    
     return (
         <header className="container mx-auto px-4 py-8">
             <nav className="flex justify-between items-center">
@@ -64,18 +68,33 @@ const Header: React.FC<HeaderProps> = ({
                     : <Moon className="text-black"/>
                     }
                 </div>
-                <Button 
-                    onClick={login} 
-                    variant="ghost" 
-                    className="text-white hover:text-gray-600 dark:hover:text-white">
-                    Login
-                </Button>
-                <Button 
-                    onClick={register} 
-                    variant="outline" 
-                    className="bg-white dark:bg-gray-300 dark:text-black text-pink-500">
-                    Sign Up
-                </Button>
+                {isLoading 
+                && <div className="relative pointer-events-none">
+                        <Skeleton className="h-8 w-24 bg-gray-300 " />
+                        <p className="absolute top-1 font-semibold left-2 text-gray-500">Dashboard</p>
+                    </div>
+                }
+                {user 
+                && <Link to="/dashboard">
+                        <Button variant={"secondary"}>Dashboard</Button>
+                    </Link> 
+                }
+                {!isLoading && !user &&
+                    <>
+                        <Button 
+                            onClick={login} 
+                            variant="ghost" 
+                            className="text-white hover:text-gray-600 dark:hover:text-white">
+                            Login
+                        </Button>
+                        <Button 
+                            onClick={register} 
+                            variant="outline" 
+                            className="bg-white dark:bg-gray-300 dark:text-black text-pink-500">
+                            Sign Up
+                        </Button>
+                    </>
+                }
             </div>
             </nav>
         </header>
